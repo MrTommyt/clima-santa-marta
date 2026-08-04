@@ -1,0 +1,16 @@
+[project]
+name = "clima-ingestion-nasa-power"
+version = "0.1.0"
+description = "NASA POWER ingestion service (Milestone 6)."
+requires-python = ">=3.12"
+dependencies = ["clima-shared"]
+
+[tool.uv.sources]
+clima-shared = { workspace = true }
+
+[tool.uv.build-backend]
+module-name = "ingestion_nasa_power"
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"

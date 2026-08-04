@@ -1,0 +1,14 @@
+[project]
+name = "clima-api"
+version = "0.1.0"
+description = "FastAPI backend for the Santa Marta climate platform"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi~=0.141",
+    "uvicorn[standard]~=0.52",
+    "pydantic-settings~=2.14",
+]
+
+[build-system]
+requires = ["uv_build>=0.12,<0.13"]
+build-backend = "uv_build"
