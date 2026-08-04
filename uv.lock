@@ -273,6 +273,14 @@ requires-dist = [{ name = "clima-shared", editable = "pipelines/shared" }]
 name = "clima-santa-marta"
 version = "0.1.0"
 source = { virtual = "." }
+dependencies = [
+    { name = "clima-api" },
+    { name = "clima-ingestion-ideam" },
+    { name = "clima-ingestion-metar" },
+    { name = "clima-ingestion-nasa-power" },
+    { name = "clima-ingestion-openmeteo" },
+    { name = "clima-shared" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -289,6 +297,14 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [
+    { name = "clima-api", editable = "apps/api" },
+    { name = "clima-ingestion-ideam", editable = "services/ingestion-ideam" },
+    { name = "clima-ingestion-metar", editable = "services/ingestion-metar" },
+    { name = "clima-ingestion-nasa-power", editable = "services/ingestion-nasa-power" },
+    { name = "clima-ingestion-openmeteo", editable = "services/ingestion-openmeteo" },
+    { name = "clima-shared", editable = "pipelines/shared" },
+]
 
 [package.metadata.requires-dev]
 dev = [
