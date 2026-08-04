@@ -1,0 +1,45 @@
+name: Data source
+description: Propose or track integration of a data source
+labels: [data-source]
+body:
+  - type: input
+    id: source-name
+    attributes:
+      label: Source name
+    validations:
+      required: true
+  - type: input
+    id: docs-url
+    attributes:
+      label: API documentation URL
+    validations:
+      required: true
+  - type: textarea
+    id: variables
+    attributes:
+      label: Variables provided
+      description: Which variables does this source provide, at what spatial/temporal resolution?
+    validations:
+      required: true
+  - type: input
+    id: cadence
+    attributes:
+      label: Update cadence
+      placeholder: e.g. hourly, every 6 h, daily with 2-day lag
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License / terms of use
+    validations:
+      required: true
+  - type: input
+    id: rate-limits
+    attributes:
+      label: Rate limits
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Evaluation notes
+      description: Reliability, latency, quirks (units, timezones, outages). Update docs/data_dictionary/data-source-matrix.md when integrated.

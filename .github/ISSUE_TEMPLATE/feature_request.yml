@@ -1,0 +1,39 @@
+name: Feature request
+description: Propose a new capability or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What need or limitation does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: dropdown
+    id: milestone-fit
+    attributes:
+      label: Milestone fit
+      description: Which milestone does this belong to?
+      options:
+        - "0 — project definition"
+        - "1 — repository and local platform"
+        - "2 — first vertical data slice"
+        - "3 — bronze/silver/gold ETL"
+        - "4 — exploration and Matplotlib"
+        - "5 — Kafka and streaming"
+        - "6 — full source expansion"
+        - "7 — ML and MLflow"
+        - "8 — backend API"
+        - "9 — public website"
+        - "10 — infrastructure and deployment"
+        - "11 — CI/CD and security"
+        - "12 — observability"
+        - unsure
+    validations:
+      required: true

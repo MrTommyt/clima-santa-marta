@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.python-version.local
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Data — datasets live in object storage, not git
+data/
+*.parquet
+*.csv
+*.nc
+*.grib2
+
+# Notebooks — outputs stripped; checkpoints never committed
+.ipynb_checkpoints/
+
+# ML artifacts — MLflow owns these
+mlruns/
+mlartifacts/
+models/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+!*.tfvars.example
+
+# Node (Milestone 9)
+node_modules/
+.next/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
