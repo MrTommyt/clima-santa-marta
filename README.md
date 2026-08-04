@@ -23,7 +23,7 @@ Run `make help` for all targets. Local UIs once `make dev` is up:
 | Service | URL |
 | --- | --- |
 | MLflow | http://localhost:5000 |
-| Airflow | http://localhost:8080 |
+| Airflow | http://localhost:8081 |
 | MinIO console | http://localhost:9001 |
 | API (run `make api`) | http://localhost:8000/docs |
 
