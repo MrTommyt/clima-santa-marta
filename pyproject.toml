@@ -19,7 +19,7 @@ dev = [
     "httpx~=0.28",
     "pre-commit~=4.6",
     "testcontainers~=4.15",
-    "psycopg[binary]~=3.2",
+    "psycopg[binary]~=3.3",
     "redis~=6.4",
     "boto3~=1.40",
 ]
