@@ -38,7 +38,7 @@ dev = [
     "pre-commit~=4.6",
     "testcontainers~=4.15",
     "psycopg[binary]~=3.2",
-    "redis~=6.4",
+    "redis~=8.1",
     "boto3~=1.40",
 ]
 
