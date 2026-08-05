@@ -3,12 +3,30 @@ name = "clima-santa-marta"
 version = "0.1.0"
 description = "Santa Marta climate intelligence platform"
 requires-python = ">=3.12"
+# Members are root dependencies so a plain `uv sync` installs the whole
+# workspace instead of uninstalling everything but the dev group.
+dependencies = [
+    "clima-api",
+    "clima-ingestion-openmeteo",
+    "clima-ingestion-ideam",
+    "clima-ingestion-metar",
+    "clima-ingestion-nasa-power",
+    "clima-shared",
+]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
 members = ["apps/api", "services/*", "pipelines/shared"]
+
+[tool.uv.sources]
+clima-api = { workspace = true }
+clima-ingestion-openmeteo = { workspace = true }
+clima-ingestion-ideam = { workspace = true }
+clima-ingestion-metar = { workspace = true }
+clima-ingestion-nasa-power = { workspace = true }
+clima-shared = { workspace = true }
 
 [dependency-groups]
 dev = [
@@ -20,7 +38,7 @@ dev = [
     "pre-commit~=4.6",
     "testcontainers~=4.15",
     "psycopg[binary]~=3.3",
-    "redis~=6.4",
+    "redis~=8.1",
     "boto3~=1.40",
 ]
 
