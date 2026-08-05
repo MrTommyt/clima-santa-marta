@@ -15,4 +15,8 @@ decision gets a new ADR that supersedes the old one.
 
 | ADR | Title | Status |
 | --- | --- | --- |
-<!-- TODO: add rows as ADRs land, e.g. | [0001](0001-monorepo.md) | Use a monorepo | accepted | -->
+| [0001](0001-keep-it-santa-marta-only.md) | Keep it Santa Marta only | draft (template not yet filled) |
+| [0002](0002-use-monorepo.md) | Use monorepo | accepted |
+| [0003](0003-use-railway-as-host.md) | Use Railway as host | accepted |
+| [0004](0004-use-kafka-for-events-only.md) | Use Kafka for events only | accepted |
+| [0005](0005-use-medallion-architecture.md) | Use a medallion architecture | accepted |

@@ -32,14 +32,16 @@ Python tooling: `uv` with `pyproject.toml`, Ruff + mypy + pre-commit, pytest (wi
 
 ## Architecture
 
-Flow: ingestion services → (raw object storage in MinIO/S3 **and** Kafka) → Spark Structured Streaming → bronze → Airflow + PySpark → silver → dbt Core → gold (PostgreSQL/PostGIS + Parquet) → ML training/MLflow → FastAPI (+ Redis cache) → Next.js public site.
+**Hybrid medallion**: medallion (bronze/silver/gold) is the logical data-quality model, not a storage prescription. PostgreSQL holds living data; object storage holds raw history and derived analytical Parquet.
 
-Strict tool responsibilities — do not blur them:
+Flow: ingestion services → (raw JSON in MinIO/S3 **and** Kafka) → Spark streaming + Airflow/PySpark batch → silver (PostgreSQL) → dbt Core (in-warehouse) → gold (PostgreSQL serving tables/materialized views + versioned Parquet analytical snapshots) → ML training/MLflow → FastAPI (+ Redis cache) → Next.js public site.
+
+Strict tool responsibilities (do not blur them):
 - **Kafka**: events only (observation received, forecast run received, DQ failure, prediction generated). Not a scheduler.
-- **Object storage (MinIO/S3)**: every raw API response and all Parquet analytical data. Never use a Railway volume as the data lake.
-- **PostgreSQL/PostGIS**: application queries (current conditions, locations, recent observations, metadata).
-- **Spark**: expensive processing — backfills, large joins, streaming aggregations.
-- **dbt**: documented analytical SQL models consumed by API/analytics.
+- **Object storage (MinIO/S3)**: immutable raw source payloads (compressed JSON, never deleted) plus versioned, derived Parquet snapshots for analytics and ML. Never use a Railway volume as the data lake.
+- **PostgreSQL/PostGIS**: the working system of record for normalized data. Canonical silver tables and gold serving tables/materialized views; application and spatial queries. Not the raw-payload archive.
+- **Spark**: streaming consumption from Kafka into Postgres (idempotent upserts via foreachBatch) and volume-justified batch work: backfills from raw JSON, large joins. Not for work Postgres or plain Python handles fine.
+- **dbt**: documented analytical SQL models, silver → gold inside Postgres.
 - **Airflow**: batch orchestration only.
 
 ### Build sequence
@@ -71,8 +73,10 @@ Warehouse uses explicit dimensional modeling: `dim_location`, `dim_station`, `di
 
 Other invariants:
 - Every record carries event time and ingestion time; failed payloads are preserved.
-- Bronze is immutable (original payloads, request metadata, payload hashes); silver normalizes units/timestamps/locations with quality flags and dedup; gold serves current conditions, summaries, climate aggregates, and verification tables.
-- ETL must be idempotent; historical partitions rebuildable; every gold record has lineage to source.
+- Raw/bronze is immutable in object storage (original payloads, request metadata, payload hashes); the raw JSON is never deleted, and any bronze Parquet copy is a derived convenience, not a replacement.
+- Silver lives in PostgreSQL: normalized units/timestamps/locations, quality flags, dedup enforced by unique constraints. Corrections enter only as newly ingested bronze records, never as manual UPDATEs, so silver stays reproducible from bronze.
+- Gold has two forms: Postgres tables/materialized views for serving (current conditions, summaries, verification) and dated, versioned Parquet snapshots for analytics/ML. Parquet snapshots are derived by deterministic export jobs and never edited in place; when they diverge from Postgres, Postgres is canonical.
+- ETL must be idempotent; silver and gold rebuildable from bronze; every gold record has lineage to source.
 - API responses must include source timestamps; the site must distinguish observed vs. modelled data and degrade gracefully when a source is down. No environmental warning may be presented as an official government alert.
 
 ## ML conventions
