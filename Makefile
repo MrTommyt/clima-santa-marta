@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup dev down test test-int lint format api clean
+.PHONY: help setup dev down test test-int lint format api clean openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
+
+ENV_FILE ?= .env.local
+UV_RUN := uv run --env-file $(ENV_FILE)
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -36,3 +39,29 @@ api: ## Run the FastAPI app locally with reload
 clean: ## Stop the platform AND DELETE volumes (needed if the Postgres DB layout changes), drop caches
 	docker compose down -v
 	rm -rf .venv .ruff_cache .mypy_cache .pytest_cache
+
+check-env:
+	$(UV_RUN) python -c \
+		'import os; print("MINIO:", os.getenv("MINIO_ENDPOINT")); print("KAFKA:", os.getenv("KAFKA_BOOTSTRAP_SERVERS"))'
+
+openmeteo-plan:
+	$(UV_RUN) \
+		--package clima-ingestion-openmeteo \
+		openmeteo-ingestion \
+		--plan
+
+openmeteo-prefetch:
+	$(UV_RUN) \
+		--package clima-ingestion-openmeteo \
+		openmeteo-ingestion
+
+metar-plan:
+	$(UV_RUN) \
+		--package clima-ingestion-metar \
+		metar-ingestion \
+		--plan
+
+metar-prefetch:
+	$(UV_RUN) \
+		--package clima-ingestion-metar \
+		metar-ingestion

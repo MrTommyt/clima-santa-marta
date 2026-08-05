@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Generated Schema",
+  "type": "object",
+  "properties": {
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "generationtime_ms": {
+      "type": "number"
+    },
+    "utc_offset_seconds": {
+      "type": "integer"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "timezone_abbreviation": {
+      "type": "string"
+    },
+    "elevation": {
+      "type": "integer"
+    },
+    "current_units": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "string"
+        },
+        "temperature_2m": {
+          "type": "string"
+        },
+        "precipitation": {
+          "type": "string"
+        },
+        "weather_code": {
+          "type": "string"
+        },
+        "rain": {
+          "type": "string"
+        },
+        "relative_humidity_2m": {
+          "type": "string"
+        },
+        "apparent_temperature": {
+          "type": "string"
+        },
+        "pressure_msl": {
+          "type": "string"
+        },
+        "surface_pressure": {
+          "type": "string"
+        },
+        "wind_speed_10m": {
+          "type": "string"
+        },
+        "wind_direction_10m": {
+          "type": "string"
+        },
+        "wind_gusts_10m": {
+          "type": "string"
+        }
+      }
+    },
+    "current": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        },
+        "interval": {
+          "type": "integer"
+        },
+        "temperature_2m": {
+          "type": "integer"
+        },
+        "precipitation": {
+          "type": "integer"
+        },
+        "weather_code": {
+          "type": "integer"
+        },
+        "rain": {
+          "type": "integer"
+        },
+        "relative_humidity_2m": {
+          "type": "integer"
+        },
+        "apparent_temperature": {
+          "type": "integer"
+        },
+        "pressure_msl": {
+          "type": "integer"
+        },
+        "surface_pressure": {
+          "type": "number"
+        },
+        "wind_speed_10m": {
+          "type": "number"
+        },
+        "wind_direction_10m": {
+          "type": "integer"
+        },
+        "wind_gusts_10m": {
+          "type": "number"
+        }
+      }
+    },
+    "hourly_units": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        },
+        "temperature_2m": {
+          "type": "string"
+        },
+        "weather_code": {
+          "type": "string"
+        },
+        "pressure_msl": {
+          "type": "string"
+        },
+        "wind_speed_10m": {
+          "type": "string"
+        },
+        "relative_humidity_2m": {
+          "type": "string"
+        },
+        "wind_direction_10m": {
+          "type": "string"
+        },
+        "dew_point_2m": {
+          "type": "string"
+        },
+        "apparent_temperature": {
+          "type": "string"
+        },
+        "precipitation_probability": {
+          "type": "string"
+        },
+        "rain": {
+          "type": "string"
+        },
+        "showers": {
+          "type": "string"
+        },
+        "precipitation": {
+          "type": "string"
+        },
+        "surface_pressure": {
+          "type": "string"
+        },
+        "visibility": {
+          "type": "string"
+        },
+        "temperature_80m": {
+          "type": "string"
+        }
+      }
+    },
+    "hourly": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "temperature_2m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "weather_code": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pressure_msl": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "wind_speed_10m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "relative_humidity_2m": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "wind_direction_10m": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "dew_point_2m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "apparent_temperature": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "precipitation_probability": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "rain": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "showers": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "precipitation": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "surface_pressure": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "visibility": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "temperature_80m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

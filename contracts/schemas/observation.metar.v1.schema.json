@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Generated Schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "icaoId": {
+        "type": "string"
+      },
+      "receiptTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "obsTime": {
+        "type": "integer"
+      },
+      "reportTime": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "temp": {
+        "type": "integer"
+      },
+      "dewp": {
+        "type": "integer"
+      },
+      "wdir": {
+        "type": "integer"
+      },
+      "wspd": {
+        "type": "integer"
+      },
+      "visib": {
+        "type": "string"
+      },
+      "altim": {
+        "type": "integer"
+      },
+      "qcField": {
+        "type": "integer"
+      },
+      "metarType": {
+        "type": "string"
+      },
+      "rawOb": {
+        "type": "string"
+      },
+      "lat": {
+        "type": "number"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "elev": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "cover": {
+        "type": "string"
+      },
+      "clouds": {
+        "type": "array",
+        "items": {
+          "type": "object"
+        }
+      },
+      "fltCat": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "icaoId",
+      "receiptTime",
+      "obsTime",
+      "reportTime",
+      "temp",
+      "dewp",
+      "wdir",
+      "wspd",
+      "visib",
+      "altim",
+      "qcField",
+      "metarType",
+      "rawOb",
+      "lat",
+      "lon",
+      "elev",
+      "name",
+      "cover",
+      "clouds",
+      "fltCat"
+    ]
+  }
+}

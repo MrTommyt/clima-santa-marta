@@ -3,7 +3,13 @@ name = "clima-shared"
 version = "0.1.0"
 description = "Shared library for ingestion services and pipelines"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "confluent-kafka",
+    "httpx",
+    "minio",
+    "pyyaml",
+    "tenacity",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.1,<0.13"]

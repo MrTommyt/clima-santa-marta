@@ -1,0 +1,53 @@
+metar_observations:
+  enabled: true
+
+  endpoint: "https://aviationweather.gov/api/data/metar"
+
+  # The matrix requires a custom user agent identifying the client.
+  user_agent: "clima-santa-marta/0.1"
+
+  # The API serves a rolling window, not history: only "now" can be captured.
+  # Each capture stores the full lookback, so outages up to lookback_hours
+  # self-heal on the next capture; older gaps are permanently lost.
+  capture_interval_minutes: 10
+  lookback_hours: 24
+
+  locations:
+    simon_bolivar_airport:
+      icao: SKSM
+
+openmeteo_historical:
+  enabled: true
+
+  endpoint: "https://api.open-meteo.com/v1/forecast"
+
+  available_from: "2026-06-01"
+  availability_lag_days: 1
+  partition: "day"
+
+  timezone: "UTC-5"
+
+  hourly:
+    - temperature_2m
+    - relative_humidity_2m
+    - apparent_temperature
+    - precipitation
+    - rain
+    - surface_pressure
+    - cloud_cover
+    - wind_speed_10m
+    - wind_direction_10m
+    - wind_gusts_10m
+
+  locations:
+    santa_marta_center:
+      latitude: 11.2408
+      longitude: -74.1990
+
+    simon_bolivar_airport:
+      latitude: 11.1196
+      longitude: -74.2306
+
+    minca:
+      latitude: 11.1436
+      longitude: -74.1178
