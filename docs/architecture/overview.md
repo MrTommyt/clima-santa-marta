@@ -25,16 +25,13 @@ flowchart TB
     Bronze["Bronze Object Storage<br/>Immutable Raw JSON"]
     Kafka["Apache Kafka<br/>Ingestion Events"]
 
-    %% Real-time path
+    %% Processing
     SparkStreaming["Spark Structured Streaming"]
-    RealtimeSilver["Real-Time Silver<br/>Provisional Features and Conditions"]
-
-    %% Canonical batch path
     Airflow["Apache Airflow<br/>Workflow Orchestration"]
     SparkBatch["PySpark Batch ETL"]
-    CanonicalSilver["Canonical Silver<br/>PostgreSQL + PostGIS"]
 
-    %% Analytical layer
+    %% Storage and analytical layer
+    Silver["Silver Tables<br/>PostgreSQL + PostGIS"]
     dbt["dbt Models"]
     Gold["Gold Tables and Views<br/>PostgreSQL + PostGIS"]
     Parquet["Parquet Snapshots<br/>Analytics and ML"]
@@ -43,7 +40,6 @@ flowchart TB
     MLTraining["ML Training"]
     MLflow["MLflow<br/>Experiments and Registry"]
     Model["Production Model"]
-    Predictions["Real-Time Predictions"]
 
     %% Application
     API["FastAPI"]
@@ -67,20 +63,20 @@ flowchart TB
     Ingestion --> Bronze
     Ingestion --> Kafka
 
-    %% Real-time processing
+    %% Streaming path
     Kafka --> SparkStreaming
-    SparkStreaming --> RealtimeSilver
+    SparkStreaming --> Silver
 
-    %% Canonical processing
+    %% Batch path
     Bronze --> Airflow
     Airflow --> SparkBatch
-    SparkBatch --> CanonicalSilver
+    SparkBatch --> Silver
 
     %% Analytical transformations
-    CanonicalSilver --> dbt
+    Silver --> dbt
     dbt --> Gold
 
-    CanonicalSilver --> Parquet
+    Silver --> Parquet
     Gold --> Parquet
 
     %% Model training and registration
@@ -89,14 +85,9 @@ flowchart TB
     MLTraining --> MLflow
     MLflow --> Model
 
-    %% Real-time inference
-    RealtimeSilver --> Model
-    Model --> Predictions
-
     %% Application serving
     Gold --> API
-    RealtimeSilver --> API
-    Predictions --> API
+    Model --> API
     API <--> Cache
     API --> Web
 
