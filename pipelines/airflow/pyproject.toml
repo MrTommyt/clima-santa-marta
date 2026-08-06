@@ -1,0 +1,19 @@
+[project]
+name = "clima-airflow"
+version = "0.1.0"
+description = "Airflow DAGs for ingestion and batch orchestration"
+requires-python = ">=3.12"
+dependencies = [
+    "apache-airflow-task-sdk~=1.3",
+    "clima-shared",
+]
+
+[tool.uv.sources]
+clima-shared = { workspace = true }
+
+[tool.uv.build-backend]
+module-name = "clima_airflow"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13"]
+build-backend = "uv_build"

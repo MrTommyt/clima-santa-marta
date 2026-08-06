@@ -53,6 +53,4 @@ Run `make help` for all targets. Local UIs once `make dev` is up:
 
 ## Status
 
-<!-- TODO: current milestone, data-collection start date, links to the live site once deployed. -->
-
-Milestone 1: repository and local platform.
+Milestone 3: bronze/silver/gold ETL

@@ -132,7 +132,9 @@ services:
     networks: [clima]
 
   airflow:
-    image: apache/airflow:3.3.0-python3.12
+    build:
+      context: .
+      dockerfile: infrastructure/docker/airflow/Dockerfile
     command: airflow standalone
     user: "${AIRFLOW_UID:-50000}:0"
     environment:
@@ -141,13 +143,24 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       # LOCAL ONLY: skips login entirely. Never use outside this compose file.
       AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+      # Ingestion-task environment: internal endpoints, not the host-side ones.
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SOURCE_CONFIG_PATH: /opt/airflow/config/sources.yaml
     ports:
       - "${AIRFLOW_PORT:-8080}:8080"
     volumes:
       - ./pipelines/airflow/dags:/opt/airflow/dags:ro
+      - ./config:/opt/airflow/config:ro
       - airflow-logs:/opt/airflow/logs
     depends_on:
       postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:8080/api/v2/monitor/health"]

@@ -51,6 +51,7 @@ class MetarObservationsAdapter(HttpSourceAdapter):
                     start_date=bucket.date(),
                     end_date=bucket.date(),
                     parameters=parameters,
+                    time_label=f"{bucket:%H%M}Z",
                 )
             )
 

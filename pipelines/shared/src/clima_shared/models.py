@@ -15,6 +15,7 @@ class FetchRequest:
     start_date: date
     end_date: date
     parameters: dict[str, Any]
+    time_label: str | None = None
 
     @property
     def request_id(self) -> str:
@@ -44,7 +45,8 @@ class FetchRequest:
             f"year={self.start_date.year:04d}/"
             f"month={self.start_date.month:02d}/"
             f"day={self.start_date.day:02d}/"
-            f"{self.request_id[:16]}.json.gz"
+            + (f"{self.time_label}-" if self.time_label else "")
+            + f"{self.request_id[:16]}.json.gz"
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -62,4 +64,5 @@ class FetchRequest:
             start_date=date.fromisoformat(value["start_date"]),
             end_date=date.fromisoformat(value["end_date"]),
             parameters=value["parameters"],
+            time_label=value.get("time_label"),
         )

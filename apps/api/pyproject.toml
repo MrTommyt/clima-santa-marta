@@ -4,7 +4,10 @@ version = "0.1.0"
 description = "FastAPI backend for the Santa Marta climate platform"
 requires-python = ">=3.12"
 dependencies = [
-    "fastapi~=0.141",
+    # Lower bound only: Airflow's task-sdk caps fastapi (<0.137 today), and
+    # the workspace shares one resolution. Revisit if the API ever needs a
+    # newer fastapi than Airflow permits.
+    "fastapi>=0.129",
     "uvicorn[standard]~=0.52",
     "pydantic-settings~=2.14",
 ]
