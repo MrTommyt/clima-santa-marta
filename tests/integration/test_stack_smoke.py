@@ -31,7 +31,8 @@ def test_postgres_reachable() -> None:
 def test_redis_reachable() -> None:
     import redis
 
-    client = redis.Redis(host="localhost", port=int(os.environ.get("REDIS_PORT", "6379")))
+    port = int(os.environ.get("REDIS_PORT", "6379"))
+    client = redis.Redis(host="localhost", port=port)
     assert client.ping()
 
 
