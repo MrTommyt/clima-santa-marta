@@ -63,6 +63,8 @@ Socrata recommends application tokens because anonymous requests share lower thr
 
 IDEAM explicitly warns about delayed transmissions, station outages, unusual values and raw sensor errors. The ingestion pipeline must preserve these records, while the silver layer applies quality flags rather than silently deleting inconvenient measurements.
 
+San Lorenzo (WIGOS `0-170-0-15015060`): OSCAR/Surface lists the station as silent/non-reporting as of August 2026, and the PRD and OSCAR coordinates disagree by roughly 5 km. Verify against the IDEAM catalogue before integrating it or seeding its location and station rows.
+
 **Evaluation status:** Approved, pending confirmation of which nearby stations provide consistent recent data.
 
 ### NASA POWER
