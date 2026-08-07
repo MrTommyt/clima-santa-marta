@@ -153,10 +153,17 @@ class HttpSourceAdapter:
         """Clamp a requested range to what the source can safely provide,
         using the `available_from` and `availability_lag_days` config keys.
         Returns None when nothing is available."""
-        available_from = date.fromisoformat(self.config["available_from"])
+        forecast_days = self.config.get("forecast_days")
+        available_from = (
+            date.today()
+            if forecast_days is not None
+            else date.fromisoformat(self.config["available_from"])
+        )
 
-        latest_safe_date = date.today() - timedelta(
-            days=self.config["availability_lag_days"]
+        latest_safe_date = (
+            date.today() - timedelta(days=self.config["availability_lag_days"])
+            if forecast_days is None
+            else date.today() + timedelta(days=forecast_days)
         )
 
         start = max(requested_from or available_from, available_from)

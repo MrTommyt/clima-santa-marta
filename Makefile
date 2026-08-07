@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup dev down test test-int lint format api clean openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
+.PHONY: help setup dev down test test-int lint format api clean rebuild openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
 
 ENV_FILE ?= .env.local
 UV_RUN := uv run --env-file $(ENV_FILE)
@@ -13,6 +13,10 @@ setup: ## Create .env, install the Python workspace and pre-commit hooks
 	uv run pre-commit install
 
 dev: ## Start the local platform and wait until every service is healthy
+	docker compose up -d --wait
+
+rebuild: ## Rebuild the custom images (airflow, mlflow) and restart on them
+	docker compose build
 	docker compose up -d --wait
 
 down: ## Stop the local platform (data volumes are kept)
