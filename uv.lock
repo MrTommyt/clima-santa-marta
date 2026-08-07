@@ -6,6 +6,7 @@ requires-python = "==3.12.*"
 members = [
     "clima-airflow",
     "clima-api",
+    "clima-db",
     "clima-ingestion-ideam",
     "clima-ingestion-metar",
     "clima-ingestion-nasa-power",
@@ -552,6 +553,23 @@ requires-dist = [
 ]
 
 [[package]]
+name = "clima-db"
+version = "0.1.0"
+source = { editable = "db" }
+dependencies = [
+    { name = "alembic" },
+    { name = "psycopg", extra = ["binary"] },
+    { name = "sqlalchemy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "alembic", specifier = "~=1.19" },
+    { name = "psycopg", extras = ["binary"], specifier = "~=3.3" },
+    { name = "sqlalchemy", specifier = "~=2.0" },
+]
+
+[[package]]
 name = "clima-ingestion-ideam"
 version = "0.1.0"
 source = { editable = "services/ingestion-ideam" }
@@ -602,6 +620,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "clima-airflow" },
     { name = "clima-api" },
+    { name = "clima-db" },
     { name = "clima-ingestion-ideam" },
     { name = "clima-ingestion-metar" },
     { name = "clima-ingestion-nasa-power" },
@@ -628,6 +647,7 @@ dev = [
 requires-dist = [
     { name = "clima-airflow", editable = "pipelines/airflow" },
     { name = "clima-api", editable = "apps/api" },
+    { name = "clima-db", editable = "db" },
     { name = "clima-ingestion-ideam", editable = "services/ingestion-ideam" },
     { name = "clima-ingestion-metar", editable = "services/ingestion-metar" },
     { name = "clima-ingestion-nasa-power", editable = "services/ingestion-nasa-power" },

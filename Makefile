@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup dev down test test-int lint format api clean rebuild openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
+.PHONY: help setup dev down test test-int lint format api clean rebuild migrate migration openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
 
 ENV_FILE ?= .env.local
 UV_RUN := uv run --env-file $(ENV_FILE)
@@ -36,6 +36,12 @@ lint: ## Ruff check, format check, and mypy
 format: ## Auto-fix lint issues and reformat
 	uv run ruff format .
 	uv run ruff check --fix .
+
+migrate: ## Apply database migrations up to head
+	uv run alembic -c db/alembic.ini upgrade head
+
+migration: ## Autogenerate a migration from model changes: make migration m="add silver tables"
+	uv run alembic -c db/alembic.ini revision --autogenerate -m "$(m)"
 
 api: ## Run the FastAPI app locally with reload
 	uv run uvicorn clima_api.main:app --reload

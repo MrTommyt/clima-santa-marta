@@ -8,6 +8,7 @@ requires-python = ">=3.12,<3.13"
 dependencies = [
     "clima-airflow",
     "clima-api",
+    "clima-db",
     "clima-ingestion-openmeteo",
     "clima-ingestion-ideam",
     "clima-ingestion-metar",
@@ -19,11 +20,12 @@ dependencies = [
 package = false
 
 [tool.uv.workspace]
-members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow"]
+members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow", "db"]
 
 [tool.uv.sources]
 clima-airflow = { workspace = true }
 clima-api = { workspace = true }
+clima-db = { workspace = true }
 clima-ingestion-openmeteo = { workspace = true }
 clima-ingestion-ideam = { workspace = true }
 clima-ingestion-metar = { workspace = true }
@@ -53,7 +55,7 @@ select = ["E", "F", "I", "C90", "N", "A", "RUF", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.12"
-files = ["apps", "services", "pipelines"]
+files = ["apps", "services", "pipelines", "db"]
 check_untyped_defs = true
 warn_unused_ignores = true
 warn_redundant_casts = true
