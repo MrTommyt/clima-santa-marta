@@ -1,7 +1,7 @@
 # ADR-0002: Use monorepo
 
 - **Status**: Accepted
-- **Date**: 2026-07-05
+- **Date**: 2026-08-05
 
 ## Context
 

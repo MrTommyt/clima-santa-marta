@@ -1,7 +1,7 @@
 # ADR-0001: Keep it Santa Marta only
 
 - **Status**: Accepted
-- **Date**: YYYY-MM-DD
+- **Date**: 2026-08-05
 
 ## Context
 

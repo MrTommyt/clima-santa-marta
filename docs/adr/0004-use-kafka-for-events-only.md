@@ -1,7 +1,7 @@
 # ADR-0004: Use kafka for events only
 
 - **Status**: Accepted
-- **Date**: 2026-07-05
+- **Date**: 2026-08-05
 
 ## Context
 
