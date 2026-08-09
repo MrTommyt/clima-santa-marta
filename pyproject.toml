@@ -9,6 +9,7 @@ dependencies = [
     "clima-airflow",
     "clima-api",
     "clima-db",
+    "clima-transforms",
     "clima-ingestion-openmeteo",
     "clima-ingestion-ideam",
     "clima-ingestion-metar",
@@ -20,12 +21,13 @@ dependencies = [
 package = false
 
 [tool.uv.workspace]
-members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow", "db"]
+members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow", "pipelines/transforms", "db"]
 
 [tool.uv.sources]
 clima-airflow = { workspace = true }
 clima-api = { workspace = true }
 clima-db = { workspace = true }
+clima-transforms = { workspace = true }
 clima-ingestion-openmeteo = { workspace = true }
 clima-ingestion-ideam = { workspace = true }
 clima-ingestion-metar = { workspace = true }

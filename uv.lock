@@ -13,6 +13,7 @@ members = [
     "clima-ingestion-openmeteo",
     "clima-santa-marta",
     "clima-shared",
+    "clima-transforms",
 ]
 
 [[package]]
@@ -626,6 +627,7 @@ dependencies = [
     { name = "clima-ingestion-nasa-power" },
     { name = "clima-ingestion-openmeteo" },
     { name = "clima-shared" },
+    { name = "clima-transforms" },
 ]
 
 [package.dev-dependencies]
@@ -653,6 +655,7 @@ requires-dist = [
     { name = "clima-ingestion-nasa-power", editable = "services/ingestion-nasa-power" },
     { name = "clima-ingestion-openmeteo", editable = "services/ingestion-openmeteo" },
     { name = "clima-shared", editable = "pipelines/shared" },
+    { name = "clima-transforms", editable = "pipelines/transforms" },
 ]
 
 [package.metadata.requires-dev]
@@ -689,6 +692,23 @@ requires-dist = [
     { name = "minio" },
     { name = "pyyaml" },
     { name = "tenacity" },
+]
+
+[[package]]
+name = "clima-transforms"
+version = "0.1.0"
+source = { editable = "pipelines/transforms" }
+dependencies = [
+    { name = "clima-db" },
+    { name = "clima-shared" },
+    { name = "sqlalchemy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "clima-db", editable = "db" },
+    { name = "clima-shared", editable = "pipelines/shared" },
+    { name = "sqlalchemy", specifier = "~=2.0" },
 ]
 
 [[package]]

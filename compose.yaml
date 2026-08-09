@@ -143,7 +143,11 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       # LOCAL ONLY: skips login entirely. Never use outside this compose file.
       AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
-      # Ingestion-task environment: internal endpoints, not the host-side ones.
+      # Ingestion/transform-task environment: internal endpoints, not host-side.
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       MINIO_ENDPOINT: minio:9000
       MINIO_ACCESS_KEY: ${MINIO_ROOT_USER}
       MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD}

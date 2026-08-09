@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import gzip
+import json
 from dataclasses import dataclass
+from datetime import datetime
 from hashlib import sha256
 from io import BytesIO
+from typing import Any
 
 from minio import Minio
 from minio.error import S3Error
@@ -46,6 +49,38 @@ class MinioBronzeStore:
             if exc.code in {"NoSuchKey", "NoSuchObject", "NotFound"}:
                 return False
             raise
+
+    def list_keys(
+        self,
+        prefix: str,
+        *,
+        modified_since: datetime | None = None,
+    ) -> list[str]:
+        """List object keys under a prefix, optionally only those stored
+        since `modified_since` (timezone-aware). Sorted for determinism."""
+        objects = self.client.list_objects(
+            self.bucket,
+            prefix=prefix,
+            recursive=True,
+        )
+
+        keys = [
+            obj.object_name
+            for obj in objects
+            if modified_since is None or obj.last_modified >= modified_since
+        ]
+
+        return sorted(keys)
+
+    def read_json(self, object_key: str) -> Any:
+        """Fetch one bronze object and return the decompressed, parsed payload."""
+        response = self.client.get_object(self.bucket, object_key)
+
+        try:
+            return json.loads(gzip.decompress(response.read()))
+        finally:
+            response.close()
+            response.release_conn()
 
     def put_json(self, object_key: str, payload: bytes) -> StoredObject:
         compressed = gzip.compress(payload)
