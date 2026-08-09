@@ -9,7 +9,7 @@ def start_run(
     *,
     source_id: int,
     dataset: str,
-    window_start: datetime,
+    window_start: datetime | None,
     window_end: datetime,
 ):
     statement = (

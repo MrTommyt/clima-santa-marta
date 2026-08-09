@@ -155,7 +155,7 @@ class HttpSourceAdapter:
         Returns None when nothing is available."""
         forecast_days = self.config.get("forecast_days")
         available_from = (
-            date.today()
+            date.today() - timedelta(days=self.config.get("past_days", 0))
             if forecast_days is not None
             else date.fromisoformat(self.config["available_from"])
         )

@@ -170,3 +170,41 @@ weather_forecast = Table(
     Index(None, "location_id", "variable", "forecast_valid_at"),
     schema="silver",
 )
+
+# Modelled past values (Open-Meteo analysis of completed days). Neither an
+# observation (no instrument) nor a forecast (no issuance semantics), and
+# never verification ground truth: the model cannot grade its own forecasts.
+weather_model_history = Table(
+    "weather_model_history",
+    metadata,
+    Column("id", BigInteger, primary_key=True),
+    Column("location_id", Integer, ForeignKey("metadata.location.id"), nullable=False),
+    Column("source_id", Integer, ForeignKey("metadata.source.id"), nullable=False),
+    Column("forecast_model", Text, nullable=False),
+    Column("valid_at", DateTime(timezone=True), nullable=False),
+    Column(
+        "created_at",
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+    ),
+    Column("quality_status", Text, nullable=False),
+    Column("raw_record_id", Text, nullable=False),
+    Column("pipeline_version", Text, nullable=False),
+    Column("variable", Text, nullable=False),
+    Column("value", Double, nullable=False),
+    Column("unit", Text, nullable=False),
+    UniqueConstraint(
+        "location_id",
+        "variable",
+        "valid_at",
+        "source_id",
+        "forecast_model",
+    ),
+    CheckConstraint(
+        "quality_status IN ('valid', 'suspicious', 'invalid')",
+        name="quality_status_values",
+    ),
+    Index(None, "location_id", "variable", "valid_at"),
+    schema="silver",
+)

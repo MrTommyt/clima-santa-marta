@@ -59,6 +59,7 @@ openmeteo_forecast:
   endpoint: "https://api.open-meteo.com/v1/forecast"
 
   forecast_days: 3
+  past_days: 2
   partition: "day"
   dataset: "forecast"
 
