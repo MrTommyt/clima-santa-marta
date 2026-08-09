@@ -139,3 +139,34 @@ weather_observation = Table(
     Index(None, "station_id", "variable", "observed_at"),
     schema="silver",
 )
+
+weather_forecast = Table(
+    "weather_forecast",
+    metadata,
+    Column("id", BigInteger, primary_key=True),
+    Column("location_id", Integer, ForeignKey("metadata.location.id"), nullable=False),
+    Column("source_id", Integer, ForeignKey("metadata.source.id"), nullable=False),
+    Column("forecast_model", Text, nullable=False),
+    Column("forecast_valid_at", DateTime(timezone=True), nullable=False),
+    Column("forecast_generated_at", DateTime(timezone=True), nullable=False),
+    Column("quality_status", Text, nullable=False),
+    Column("raw_record_id", Text, nullable=False),
+    Column("pipeline_version", Text, nullable=False),
+    Column("variable", Text, nullable=False),
+    Column("value", Double, nullable=False),
+    Column("unit", Text, nullable=False),
+    UniqueConstraint(
+        "location_id",
+        "variable",
+        "forecast_valid_at",
+        "forecast_generated_at",
+        "source_id",
+        "forecast_model",
+    ),
+    CheckConstraint(
+        "quality_status IN ('valid', 'suspicious', 'invalid')",
+        name="quality_status_values",
+    ),
+    Index(None, "location_id", "variable", "forecast_valid_at"),
+    schema="silver",
+)

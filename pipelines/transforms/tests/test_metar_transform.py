@@ -88,7 +88,7 @@ def test_transform_is_idempotent_with_lineage(engine):
 
 
 def test_known_value_lands_converted(engine):
-    """TODO(you): pick one report from the fixture whose raw values you know,
+    """TODO: pick one report from the fixture whose raw values you know,
     run the transform, and assert the silver row holds the CONVERTED value
     (e.g. wind knots -> m/s) with the right unit string. This is the test
     that catches unit mistakes; the idempotency test cannot."""

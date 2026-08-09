@@ -10,40 +10,19 @@ part of every row's lineage.
 
 from __future__ import annotations
 
-import os
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-from clima_db.models import source, station, weather_observation
-from clima_shared.bronze import MinioBronzeStore
-from sqlalchemy import Engine, create_engine, select
+from clima_db.models import station, weather_observation
+from sqlalchemy import Engine, select
 from sqlalchemy.dialects.postgresql import insert
 
 from clima_transforms.assess import assess
 from clima_transforms.runs import start_run, update_run
+from clima_transforms.utils import build_bronze, build_engine, source_id_by_code
 
 PIPELINE_VERSION = "metar-0.1.0"
-
 BRONZE_PREFIX = "source=metar/dataset=observations/"
-
-
-def build_engine() -> Engine:
-    user = os.getenv("POSTGRES_USER", "clima")
-    password = os.getenv("POSTGRES_PASSWORD", "clima-local-dev")
-    host = os.getenv("POSTGRES_HOST", "localhost")
-    port = os.getenv("POSTGRES_PORT", "5432")
-    db = os.getenv("POSTGRES_DB", "clima")
-    return create_engine(f"postgresql+psycopg://{user}:{password}@{host}:{port}/{db}")
-
-
-def build_bronze() -> MinioBronzeStore:
-    return MinioBronzeStore(
-        endpoint=os.environ["MINIO_ENDPOINT"],
-        access_key=os.environ["MINIO_ACCESS_KEY"],
-        secret_key=os.environ["MINIO_SECRET_KEY"],
-        bucket=os.getenv("MINIO_BRONZE_BUCKET", "bronze"),
-        secure=os.getenv("MINIO_SECURE", "false").lower() == "true",
-    )
 
 
 def station_id_by_icao(engine: Engine, icao: str) -> int:
@@ -58,16 +37,6 @@ def station_id_by_icao(engine: Engine, icao: str) -> int:
     return row.id
 
 
-def source_id_by_code(engine: Engine, code: str) -> int:
-    with engine.connect() as conn:
-        row = conn.execute(select(source.c.id).where(source.c.code == code)).first()
-
-    if row is None:
-        raise ValueError(f"No source with code={code}; seed it first")
-
-    return row.id
-
-
 def parse_report(
     report: dict[str, Any],
     *,
@@ -75,13 +44,7 @@ def parse_report(
     source_id: int,
     raw_record_id: str,
 ) -> list[dict[str, Any]]:
-    """Turn ONE report from the payload into silver rows (one per variable).
-
-    TODO(you): implement per the mapping doc. The temperature example below
-    shows the complete pattern for one variable: extraction, absence
-    handling, conversion (none here), assessment, and row shape. Every other
-    mapped field follows it.
-    """
+    """Turn ONE report from the payload into silver rows (one per variable)."""
     rows: list[dict[str, Any]] = []
     observed_at = datetime.fromisoformat(report["reportTime"])
 
