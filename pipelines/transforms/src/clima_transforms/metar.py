@@ -1,9 +1,5 @@
 """METAR bronze -> silver transform.
 
-Structure (written): windowing, station lookup, upsert, orchestration.
-Content (YOURS, marked TODO): parse_report(), following the mapping doc at
-docs/data_dictionary/metar-field-mapping.md. Keep code and doc in agreement.
-
 Bump PIPELINE_VERSION whenever mapping or assessment logic changes: it is
 part of every row's lineage.
 """
