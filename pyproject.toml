@@ -36,7 +36,7 @@ clima-shared = { workspace = true }
 
 [dependency-groups]
 dev = [
-    "ruff~=0.16.1",
+    "ruff~=0.16.2",
     "mypy~=2.3",
     "pytest~=9.1",
     "pytest-cov~=7.1",
