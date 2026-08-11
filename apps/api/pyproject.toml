@@ -9,7 +9,7 @@ dependencies = [
     # newer fastapi than Airflow permits.
     "fastapi>=0.129",
     "uvicorn[standard]~=0.52",
-    "pydantic-settings~=2.14",
+    "pydantic-settings~=2.15",
 ]
 
 [build-system]
