@@ -1,0 +1,22 @@
+[project]
+name = "clima-ml"
+version = "0.1.0"
+description = "Exploration and ML: data loaders, matplotlib style, notebooks"
+requires-python = ">=3.12"
+dependencies = [
+    "clima-db",
+    "pandas~=3.0",
+    "matplotlib~=3.11",
+    "sqlalchemy~=2.0",
+    "psycopg[binary]~=3.3",
+]
+
+[tool.uv.sources]
+clima-db = { workspace = true }
+
+[tool.uv.build-backend]
+module-name = "clima_ml"
+
+[build-system]
+requires = ["uv_build>=0.12.1,<0.13"]
+build-backend = "uv_build"

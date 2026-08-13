@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup dev down test test-int lint format api clean rebuild migrate migration dbt-run dbt-test dbt-docs openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
+.PHONY: lab explore help setup dev down test test-int lint format api clean rebuild migrate migration dbt-run dbt-test dbt-docs openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
 
 ENV_FILE ?= .env.local
 UV_RUN := uv run --env-file $(ENV_FILE)
@@ -53,6 +53,12 @@ dbt-test: ## Run dbt schema tests
 
 dbt-docs: ## Generate dbt docs and lineage graph
 	uv run dbt docs generate $(DBT_DIRS)
+
+lab: ## Start JupyterLab for exploration notebooks
+	uv run jupyter lab --notebook-dir ml/notebooks
+
+explore: ## Render the exploration documents: make explore [f=ml/notebooks/00_data_tour.qmd]
+	uv run quarto render $(or $(f),ml/notebooks)
 
 api: ## Run the FastAPI app locally with reload
 	uv run uvicorn clima_api.main:app --reload

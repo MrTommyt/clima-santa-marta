@@ -1,0 +1,100 @@
+---
+title: "Data tour"
+format:
+  html:
+    embed-resources: true
+    toc: true
+execute:
+  warning: false
+---
+
+How to reach the warehouse from an analysis document. The loaders in
+`clima_ml.load` return long-format DataFrames; `load.wide()` pivots them.
+Requires the local stack (`make dev`). Render with `make explore`.
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+import pandas as pd
+
+from clima_ml import load, style
+
+VARIABLES = [
+    "air_temperature_2m",
+    "dew_point_2m",
+    "wind_direction_10m",
+    "wind_speed_10m",
+    "cloud_cover",
+    "surface_pressure",
+    "wind_gust_10m",
+    "visibility",
+]
+style.use()
+```
+
+## Observations
+
+```{python}
+obs = load.observations()
+obs.tail()
+```
+
+```{python}
+temps = load.wide(load.observations(variables=["air_temperature_2m"]))
+temps.describe()
+```
+
+```{python}
+# Example figure: delete or replace, the real ones start here.
+fig, ax = plt.subplots()
+ax.plot(temps["observed_at"], temps["air_temperature_2m"], color=style.OBSERVED)
+ax.set_title("SKSM air temperature")
+ax.set_ylabel("°C")
+style.source_note(ax, "Data: SKSM METAR via Aviation Weather")
+plt.show()
+```
+
+## Forecast verification
+
+```{python}
+rows = 2
+cols = 4
+fig, axes = plt.subplots(rows, cols, figsize=(cols * 4, rows * 3))
+
+for i, var in enumerate(VARIABLES):
+    row = i // cols
+    col = i % cols
+    ax = axes[row][col]
+
+    ver = load.verification(variables=[var])
+    mae_per_hour = ver.groupby("forecast_horizon_hours")[
+        "forecast_absolute_error"
+    ].mean().to_numpy()
+
+    ax.set_title(var + " MAE")
+    sns.lineplot(mae_per_hour, ax=ax)
+
+    # Create a simple linear regression that goes over that line
+    l = len(mae_per_hour)
+    if l == 0:
+        continue
+
+    X = np.arange(0, l)
+
+    slope, intercept = np.polyfit(X, mae_per_hour, 1)
+    y_pred = (X * slope) + intercept
+    sns.lineplot(pd.DataFrame({"x":X, "y":y_pred}), x="x", y="y", ax=ax)
+
+    ax.text(x=0, y=(max(mae_per_hour) * .98), s=f'Slope: {slope:.4f}')
+    ax.set_ylabel("")
+
+plt.tight_layout()
+plt.show()
+```
+
+We see some very interesting trends in one variables, as expected for the `surface_temperature_2m`, `air_temperature_2m`, `wind_speed_10m`, `wind_speed_10m`, and even `wind_gust_10m` & `cloud_cover` (although that one gets rounded up because SKSM returns a categorical value and it gets turned into a numerical one for DB ingestion). `wind_direction_10m` it's a bit more chaotic although I might understand why given that the data is ingested in degrees and that's a cyclic variable, that 0 and 360 are the same. It might need to get converted into a separate variable, maybe complex numbers or transforming it into vectors for applying the dot product.
+
+```{python}
+
+```

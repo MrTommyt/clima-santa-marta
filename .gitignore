@@ -53,3 +53,8 @@ analytics/dbt/.user.yml
 analytics/dbt/target/
 analytics/dbt/dbt_packages/
 analytics/dbt/logs/
+
+# Quarto render artifacts
+ml/notebooks/*.html
+ml/notebooks/*_files/
+.quarto/

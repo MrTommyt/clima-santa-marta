@@ -53,4 +53,4 @@ Run `make help` for all targets. Local UIs once `make dev` is up:
 
 ## Status
 
-Milestone 3: bronze/silver/gold ETL
+Milestone 4: matplotlib dashboards on the data

@@ -9,24 +9,28 @@ dependencies = [
     "clima-airflow",
     "clima-api",
     "clima-db",
+    "clima-ml",
     "clima-transforms",
     "clima-ingestion-openmeteo",
     "clima-ingestion-ideam",
     "clima-ingestion-metar",
     "clima-ingestion-nasa-power",
     "clima-shared",
+    "seaborn>=0.13.2",
+    "scikit-learn>=1.9.0",
 ]
 
 [tool.uv]
 package = false
 
 [tool.uv.workspace]
-members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow", "pipelines/transforms", "db"]
+members = ["apps/api", "services/*", "pipelines/shared", "pipelines/airflow", "pipelines/transforms", "db", "ml"]
 
 [tool.uv.sources]
 clima-airflow = { workspace = true }
 clima-api = { workspace = true }
 clima-db = { workspace = true }
+clima-ml = { workspace = true }
 clima-transforms = { workspace = true }
 clima-ingestion-openmeteo = { workspace = true }
 clima-ingestion-ideam = { workspace = true }
@@ -45,6 +49,10 @@ dev = [
     "testcontainers~=4.15",
     "types-pyyaml",
     "dbt-postgres~=1.11",
+    "jupyterlab~=4.6",
+    "quarto-cli~=1.10",
+    "nbstripout~=0.9",
+    "pandas-stubs~=3.0",
     "psycopg[binary]~=3.3",
     "redis~=8.1",
     "boto3~=1.40",
@@ -58,14 +66,14 @@ select = ["E", "F", "I", "C90", "N", "A", "RUF", "UP", "B", "SIM"]
 
 [tool.mypy]
 python_version = "3.12"
-files = ["apps", "services", "pipelines", "db"]
+files = ["apps", "services", "pipelines", "db", "ml"]
 check_untyped_defs = true
 warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_optional = true
 
 [tool.pytest.ini_options]
-testpaths = ["apps", "services", "pipelines", "tests"]
+testpaths = ["apps", "services", "pipelines", "db", "ml", "tests"]
 addopts = "--strict-markers"
 markers = [
     "integration: requires the local docker compose stack (make dev)",
