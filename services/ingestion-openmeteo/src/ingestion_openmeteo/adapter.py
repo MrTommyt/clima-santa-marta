@@ -60,7 +60,10 @@ class OpenMeteoHistoricalAdapter(HttpSourceAdapter):
                         source=self.source,
                         dataset=self.dataset,
                         location_id=location_id,
-                        start_date=start,
+                        # The object key's day partition must stay the issuance
+                        # day even when past_days pulls start_date backwards:
+                        # the transform derives forecast_generated_at from it.
+                        start_date=bucket.date() if is_forecast else start,
                         end_date=end,
                         parameters=parameters,
                         time_label=f"{bucket:%H%M}Z" if is_forecast else None,

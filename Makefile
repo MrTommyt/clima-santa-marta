@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help setup dev down test test-int lint format api clean rebuild migrate migration openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
+.PHONY: help setup dev down test test-int lint format api clean rebuild migrate migration dbt-run dbt-test dbt-docs openmeteo-plan openmeteo-prefetch metar-plan metar-prefetch check-env
 
 ENV_FILE ?= .env.local
 UV_RUN := uv run --env-file $(ENV_FILE)
@@ -42,6 +42,17 @@ migrate: ## Apply database migrations up to head
 
 migration: ## Autogenerate a migration from model changes: make migration m="add silver tables"
 	uv run alembic -c db/alembic.ini revision --autogenerate -m "$(m)"
+
+DBT_DIRS := --project-dir analytics/dbt --profiles-dir analytics/dbt
+
+dbt-run: ## Build all dbt models into staging/gold
+	uv run dbt run $(DBT_DIRS)
+
+dbt-test: ## Run dbt schema tests
+	uv run dbt test $(DBT_DIRS)
+
+dbt-docs: ## Generate dbt docs and lineage graph
+	uv run dbt docs generate $(DBT_DIRS)
 
 api: ## Run the FastAPI app locally with reload
 	uv run uvicorn clima_api.main:app --reload

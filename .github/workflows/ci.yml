@@ -33,3 +33,6 @@ jobs:
 
       - name: Unit tests
         run: uv run pytest -m "not integration and not e2e"
+
+      - name: dbt parse
+        run: uv run dbt parse --project-dir analytics/dbt --profiles-dir analytics/dbt

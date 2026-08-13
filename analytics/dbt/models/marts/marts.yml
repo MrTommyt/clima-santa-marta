@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: current_conditions
+    description: >
+      Latest observation per station and source, pivoted wide and joined to
+      station and location metadata. One row per station/source.
+    columns:
+      - name: station_id
+        tests: [not_null]
+      - name: observed_at
+        tests: [not_null]
+      - name: source_code
+        tests: [not_null]
+
+  - name: forecast_hourly
+    description: >
+      The newest forecast run per location, source and model, future hours
+      only, pivoted wide per valid hour. What the forecast page reads.
+    columns:
+      - name: location_id
+        tests: [not_null]
+      - name: forecast_generated_at
+        tests: [not_null]
+      - name: forecast_valid_at
+        tests: [not_null]
+      - name: forecast_horizon_hours
+        tests: [not_null]
+
+  - name: daily_summary
+    description: >
+      Per location and local day (America/Bogota): temperature min/max/mean,
+      precipitation total, humidity and wind aggregates. data_kind separates
+      instrument data from model estimates; they are never mixed in one row.
+    columns:
+      - name: location_id
+        tests: [not_null]
+      - name: day
+        tests: [not_null]
+      - name: data_kind
+        tests:
+          - not_null
+          - accepted_values:
+              values: [observed, modelled]
+
+  - name: forecast_verification
+    description: >
+      Every future-horizon forecast value joined to the hourly-averaged
+      observation for the same location, variable and hour. Error is forecast
+      minus observed. Only rows where ground truth exists (instrumented
+      locations); model history is never used as truth.
+    columns:
+      - name: forecast_generated_at
+        tests: [not_null]
+      - name: forecast_valid_at
+        tests: [not_null]
+      - name: forecast_horizon_hours
+        tests: [not_null]
+      - name: forecast_error
+        tests: [not_null]
+
+  - name: source_freshness
+    description: >
+      Last run, last success and latest data timestamp per source and
+      dataset, with staleness in minutes. What the status page reads.
+    columns:
+      - name: source_code
+        tests: [not_null]
+      - name: dataset
+        tests: [not_null]

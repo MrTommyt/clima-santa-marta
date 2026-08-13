@@ -1,0 +1,19 @@
+name: clima
+version: "1.0.0"
+profile: clima
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+target-path: target
+clean-targets: [target, dbt_packages]
+
+models:
+  clima:
+    staging:
+      +materialized: view
+      +schema: staging
+    marts:
+      +materialized: view
+      +schema: gold

@@ -36,3 +36,13 @@ Absent or null array entries: skip (no row).
 Append-only insert on the six-column grain (location, variable, valid_at,
 generated_at, source, model): replaying a window can only skip, never
 overwrite. Forecast runs never supersede each other by design (ADR-0005).
+
+## Key partition = issuance day (2026-08-13)
+
+With past_days in play, the request's start_date reaches two days back; the
+object key's day partition nevertheless remains the issuance day, because
+issuance_from_key derives forecast_generated_at from it. Captures between
+2026-08-09 and 2026-08-13 predated this rule, were keyed by window start, and
+produced silver rows mislabeled two days early: 48 objects were re-keyed to
+their true issuance day and their 28,512 rows re-transformed. Detected by the
+source_freshness mart on its first day in existence.

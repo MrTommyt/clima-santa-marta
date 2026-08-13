@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: stg_weather_observation
+    description: Valid instrument observations, long format
+    columns:
+      - name: station_id
+        tests: [not_null]
+      - name: variable
+        tests: [not_null]
+      - name: value
+        tests: [not_null]
+      - name: observed_at
+        tests: [not_null]
+
+  - name: stg_weather_forecast
+    description: >
+      Valid forecast rows with computed horizon. Includes negative horizons
+      (the model's view of the recent past at issuance); serving and
+      verification models filter horizon >= 0.
+    columns:
+      - name: location_id
+        tests: [not_null]
+      - name: forecast_generated_at
+        tests: [not_null]
+      - name: forecast_valid_at
+        tests: [not_null]
+      - name: variable
+        tests: [not_null]
+      - name: value
+        tests: [not_null]
+
+  - name: stg_weather_model_history
+    description: Valid modelled past values. Never verification ground truth.
+    columns:
+      - name: location_id
+        tests: [not_null]
+      - name: valid_at
+        tests: [not_null]
+      - name: variable
+        tests: [not_null]
+      - name: value
+        tests: [not_null]
+
+  - name: stg_location
+    columns:
+      - name: location_id
+        tests: [not_null, unique]
+      - name: slug
+        tests: [not_null, unique]
+
+  - name: stg_station
+    columns:
+      - name: station_id
+        tests: [not_null, unique]
+      - name: location_id
+        tests: [not_null]
+
+  - name: stg_source
+    columns:
+      - name: source_id
+        tests: [not_null, unique]
+      - name: code
+        tests: [not_null, unique]
+
+  - name: stg_ingestion_run
+    columns:
+      - name: run_id
+        tests: [not_null, unique]
+      - name: dataset
+        tests: [not_null]
+      - name: status
+        tests: [not_null]

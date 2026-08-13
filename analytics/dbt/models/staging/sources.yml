@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: silver
+    description: Canonical cleaned data, written by the transforms (never by dbt)
+    schema: silver
+    tables:
+      - name: weather_observation
+        description: Long-format instrument observations (METAR, later IDEAM)
+      - name: weather_forecast
+        description: Forecast runs, append-only; grain includes forecast_generated_at
+      - name: weather_model_history
+        description: Modelled past values; never verification ground truth
+
+  - name: metadata
+    description: Reference data, seeded by migrations
+    schema: metadata
+    tables:
+      - name: location
+      - name: station
+      - name: source
+      - name: ingestion_run

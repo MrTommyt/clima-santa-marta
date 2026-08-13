@@ -28,7 +28,7 @@ data/
 # ML artifacts — MLflow owns these
 mlruns/
 mlartifacts/
-models/
+/models/
 
 # Terraform
 *.tfstate
@@ -47,3 +47,9 @@ node_modules/
 .vscode/
 *.swp
 .DS_Store
+
+# dbt
+analytics/dbt/.user.yml
+analytics/dbt/target/
+analytics/dbt/dbt_packages/
+analytics/dbt/logs/
