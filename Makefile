@@ -57,8 +57,8 @@ dbt-docs: ## Generate dbt docs and lineage graph
 lab: ## Start JupyterLab for exploration notebooks
 	uv run jupyter lab --notebook-dir ml/notebooks
 
-explore: ## Render the exploration documents: make explore [f=ml/notebooks/00_data_tour.qmd]
-	uv run quarto render $(or $(f),ml/notebooks)
+explore: ## Render exploration docs against the stack in ENV_FILE: make explore [f=...] [ENV_FILE=.env.railway]
+	uv run --env-file $(ENV_FILE) quarto render $(or $(f),ml/notebooks)
 
 api: ## Run the FastAPI app locally with reload
 	uv run uvicorn clima_api.main:app --reload

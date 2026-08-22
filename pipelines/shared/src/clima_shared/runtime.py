@@ -33,8 +33,12 @@ def build_service(adapter: HttpSourceAdapter) -> BootstrapService:
     )
     bronze.ensure_bucket()
 
-    events = KafkaEventPublisher(
-        bootstrap_servers=os.environ["KAFKA_BOOTSTRAP_SERVERS"],
+    # No broker configured means no events: bronze writes still happen.
+    bootstrap_servers = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
+    events = (
+        KafkaEventPublisher(bootstrap_servers=bootstrap_servers)
+        if bootstrap_servers
+        else None
     )
 
     return BootstrapService(

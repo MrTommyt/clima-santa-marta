@@ -58,3 +58,6 @@ analytics/dbt/logs/
 ml/notebooks/*.html
 ml/notebooks/*_files/
 .quarto/
+
+# Railway credentials for local analysis against production
+.env.railway

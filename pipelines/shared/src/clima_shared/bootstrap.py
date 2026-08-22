@@ -27,7 +27,7 @@ class BootstrapService:
         *,
         adapter: SourceAdapter,
         bronze: MinioBronzeStore,
-        events: KafkaEventPublisher,
+        events: KafkaEventPublisher | None,
     ) -> None:
         self.adapter = adapter
         self.bronze = bronze
@@ -59,7 +59,8 @@ class BootstrapService:
             payload=payload,
         )
 
-        self.events.publish_created(request, stored)
+        if self.events is not None:
+            self.events.publish_created(request, stored)
 
         return BootstrapResult(
             request_id=request.request_id,

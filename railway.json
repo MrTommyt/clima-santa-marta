@@ -1,0 +1,21 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "infrastructure/railway/airflow/Dockerfile",
+    "watchPatterns": [
+      "pipelines/**",
+      "services/**",
+      "db/**",
+      "analytics/dbt/**",
+      "config/**",
+      "infrastructure/railway/airflow/**"
+    ]
+  },
+  "deploy": {
+    "healthcheckPath": "/api/v2/monitor/health",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  }
+}
