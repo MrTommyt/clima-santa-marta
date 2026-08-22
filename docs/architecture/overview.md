@@ -264,3 +264,25 @@ reproducible historical reprocessing.
 When an upstream source fails, the public application degrades gracefully: cached data
 may remain visible, but every response exposes its source and last-update timestamp;
 stale values are never presented as current.
+
+#### As deployed (2026-08-21)
+
+The collection slice runs on Railway ahead of the full target above, so that data
+accumulates without depending on a developer machine:
+
+- **PostGIS** (Railway template, Postgres 16 / PostGIS 3.7): the `railway` database
+  is the warehouse (`metadata`, `silver`, `staging`, `gold`); a separate `airflow`
+  database holds Airflow's metadata. Local development runs Postgres 17; no features
+  in use differ between the two.
+- **Bucket** `bronze`: Railway's S3-compatible object storage, the production
+  counterpart of local MinIO. The same client code targets both; only endpoint,
+  credentials and TLS differ (`MINIO_*` variables).
+- **Airflow**: one `airflow standalone` container built from
+  `infrastructure/railway/airflow/Dockerfile` with DAGs, packages and `config/`
+  baked in. GitHub pushes to `main` rebuild it (`railway.json` watch patterns).
+- **Not yet deployed**: Kafka (no consumers until Milestone 5; the event publisher
+  is skipped when no broker is configured), Redis, MLflow, the API and the website.
+
+Local and remote split: the compose stack stays the development environment with its
+DAGs paused, so only Railway collects. Analysis against production uses a gitignored
+`.env.railway` (`make explore ENV_FILE=.env.railway`).

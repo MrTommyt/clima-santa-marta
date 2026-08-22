@@ -51,6 +51,19 @@ Run `make help` for all targets. Local UIs once `make dev` is up:
 - [Data-source matrix](docs/data_dictionary/data-source-matrix.md)
 - [AI usage policy](docs/ai-usage-policy.md)
 
+## Deployment
+
+The collection pipeline runs on Railway (project `clima-santa-marta`, environment
+`production`): PostGIS, an S3-compatible bucket for bronze, and one Airflow service
+built from `infrastructure/railway/airflow/Dockerfile`. Pushes to `main` that touch
+pipelines, services, db, dbt or config rebuild it (see `railway.json`). The local
+compose stack remains the development environment; its DAGs are paused so only
+Railway collects. To analyze production data from this machine:
+
+```bash
+make explore ENV_FILE=.env.railway   # .env.railway is gitignored; see docs/architecture/overview.md
+```
+
 ## Status
 
-Milestone 4: matplotlib dashboards on the data
+Milestone 4: matplotlib dashboards on the data. Collection runs unattended on Railway.
