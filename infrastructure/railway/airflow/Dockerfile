@@ -26,4 +26,6 @@ ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor \
     AIRFLOW__API__PORT=8080 \
     SOURCE_CONFIG_PATH=/opt/airflow/config/sources.yaml
 
-CMD ["airflow", "standalone"]
+COPY --chown=airflow:0 infrastructure/railway/airflow/entrypoint.sh /opt/clima/entrypoint.sh
+
+CMD ["bash", "/opt/clima/entrypoint.sh"]
