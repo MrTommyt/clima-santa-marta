@@ -93,3 +93,13 @@ def test_known_value_lands_converted(engine):
     (e.g. wind knots -> m/s) with the right unit string. This is the test
     that catches unit mistakes; the idempotency test cannot."""
     ...
+
+
+def test_numeric_visibility_converts(engine):
+    from clima_transforms.metar import parse_report
+
+    report = {"reportTime": "2026-08-24T00:00:00.000Z", "visib": 6.21}
+    rows = parse_report(report, station_id=1, source_id=2, raw_record_id="x")
+
+    assert rows[0]["variable"] == "visibility"
+    assert rows[0]["value"] == pytest.approx(6.21 * 1609.34)

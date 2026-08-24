@@ -33,6 +33,33 @@ def station_id_by_icao(engine: Engine, icao: str) -> int:
     return row.id
 
 
+COVER_MAPPING = {"CLR": 0.0, "FEW": 18.75, "SCT": 43.75, "BKN": 75.0, "OVC": 100.0}
+
+
+def knot_to_ms(x):
+    return x * 0.514444
+
+
+def conv_visib(x):
+    # Arrives as "6+" (capped) or as a plain number of statute miles.
+    if isinstance(x, str):
+        if x.endswith("+"):
+            return 10000.0
+        x = float(x)
+    return float(x) * 1609.34
+
+
+def parse_cover(x: str):
+    return COVER_MAPPING.get(x)
+
+
+def parse_direction(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None
+
+
 def parse_report(
     report: dict[str, Any],
     *,
@@ -43,25 +70,6 @@ def parse_report(
     """Turn ONE report from the payload into silver rows (one per variable)."""
     rows: list[dict[str, Any]] = []
     observed_at = datetime.fromisoformat(report["reportTime"])
-
-    def knot_to_ms(x):
-        return x * 0.514444
-
-    def conv_visib(x: str):
-        if x.endswith("+"):
-            return 10000.0
-        return float(x) * 1609.34
-
-    cover_mapping = {"CLR": 0.0, "FEW": 18.75, "SCT": 43.75, "BKN": 75.0, "OVC": 100.0}
-
-    def parse_cover(x: str):
-        return cover_mapping.get(x)
-
-    def parse_direction(x):
-        try:
-            return float(x)
-        except (TypeError, ValueError):
-            return None
 
     def append_row(canonical_var, source_field, unit, conv=lambda x: x):
         value = report.get(source_field)
