@@ -55,7 +55,7 @@ dev = [
     "pandas-stubs~=3.0",
     "psycopg[binary]~=3.3",
     "redis~=8.1",
-    "boto3~=1.40",
+    "boto3~=1.43",
 ]
 
 [tool.ruff]
